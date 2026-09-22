@@ -1,0 +1,26 @@
+/**
+ * All of the CSS for your public-facing functionality should be
+ * included in this file.
+-------------------------------------------------------------- */
+.search-container {
+    position: relative;
+    width:250px;
+    margin:0 auto;
+}
+
+.wrapper-data-container-shortcode-data-posts {
+      position: relative;
+      top:0;
+      height:200px;
+      overflow-y:auto;
+}
+
+.loadinggif {
+    background:url('../../public/images/animated_loader_gif_20.gif') no-repeat right center;
+}
+
+.search-term-shortcode,
+.wrapper-data-container-shortcode-data-posts,
+.loadinggif {
+    background-color: white;
+}
