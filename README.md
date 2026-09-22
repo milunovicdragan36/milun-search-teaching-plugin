@@ -136,7 +136,9 @@ Students can use this repository as a reference and compare their code with the 
 
 7. Configure the search settings.
 
-8. Add the Milun Search shortcode to a page or post.
+8. Add the following shortcode to a page or post:
+
+   `[miluse_search_post]`
 
 9. Open the page and start searching.
 
