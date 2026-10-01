@@ -3,9 +3,8 @@
 /**
  * Search Form class.
  *
- * Registers the Search Form custom post type,
- * creates the admin menu page,
- * and displays the Search Form meta box.
+ * Provides the structure for the Search Form
+ * functionality used by the plugin.
  */
 class MILUSE_Search_Form {
 
@@ -50,16 +49,13 @@ class MILUSE_Search_Form {
     }
 
 
-
-    /**
-     * Render the Search Form meta box.
-     *
-     * Displays published post titles.
-     * Clicking a title allows the user to mark that post
-     * as excluded from search results.
-     *
-     */
-    public function miluse_render_meta_box( $post ) {
+/**
+ * Add the Search Form meta box.
+ *
+ * The meta box functionality will be implemented
+ * in a later lesson.
+ */
+    public function miluse_add_meta_boxes() {
 
       
     }
