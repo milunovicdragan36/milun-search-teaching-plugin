@@ -7,8 +7,13 @@
  * functionality used by the plugin.
  */
 class MILUSE_Search_Form {
-
-
+    
+      /**
+     * Search Form custom post type.
+     *
+     * @var string
+     */
+    private $post_type = 'miluse_search_post';
     /**
      * Initialize the Search Form functionality.
      */
@@ -16,9 +21,6 @@ class MILUSE_Search_Form {
 
         // Register the custom post type.
         add_action( 'init', array( $this, 'register_post_type' ) );
-
-        // Add Search Form to the WordPress admin menu.
-        add_action( 'admin_menu', array( $this, 'search_form_menu' ) );
 
         // Add meta boxes to the Search Form.
         add_action( 'add_meta_boxes', array( $this, 'miluse_add_meta_boxes' ) );
@@ -29,24 +31,23 @@ class MILUSE_Search_Form {
      * Register the Search Form custom post type.
      */
     public function register_post_type() {
-
-       
+        register_post_type(
+            'miluse_search_post',
+            array(
+                'label' => __('Search Form', 'milun-search'),
+                'public' => false,
+                'show_ui' => true,
+                'show_in_menu' => true,
+                'supports' => false,
+                'capabilities' => array(
+                    'create_posts' => 'do_not_allow',
+                ),
+                'map_meta_cap' => true
+            )
+        );
+        
     }
 
-
-    /**
-     * Add Search Form to the admin menu.
-     *
-     * If a Search Form does not exist,
-     * create one automatically.
-     *
-     * The admin menu then opens the
-     * existing Search Form directly.
-     */
-    public function search_form_menu() {
-
-    
-    }
 
 
 /**
@@ -59,4 +60,6 @@ class MILUSE_Search_Form {
 
       
     }
+
+    
 }
