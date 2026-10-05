@@ -155,23 +155,7 @@ Enables WordPress meta capability mapping for the custom post type.
 
 WordPress can map operations on individual posts to the appropriate primitive capabilities for the current user.
 
-## Preparing the Meta Box
 
-We also register the `add_meta_boxes` action:
-
-```php
-add_action( 'add_meta_boxes', array( $this, 'miluse_add_meta_boxes' ) );
-```
-
-The `miluse_add_meta_boxes()` method currently exists as an empty method:
-
-```php
-public function miluse_add_meta_boxes() {
-
-}
-```
-
-The method is prepared now so that the Search Form meta box functionality can be implemented in a later lesson.
 
 ## Why Use a Custom Post Type?
 
