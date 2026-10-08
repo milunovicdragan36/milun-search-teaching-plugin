@@ -8,12 +8,7 @@
  */
 class MILUSE_Search_Form {
     
-      /**
-     * Search Form custom post type.
-     *
-     * @var string
-     */
-    private $post_type = 'miluse_search_post';
+
     /**
      * Initialize the Search Form functionality.
      */
@@ -52,14 +47,21 @@ class MILUSE_Search_Form {
 
 /**
  * Add the Search Form meta box.
- *
- * The meta box functionality will be implemented
- * in a later lesson.
  */
     public function miluse_add_meta_boxes() {
-
-      
+        add_meta_box(
+            'miluse_posts_titles',
+            __('Search Form', 'milun-search'),
+            array( $this,'miluse_search_visibility'),
+            'miluse_search_post',
+            'normal',
+            'default'
+        );
+       
+    }
+    public function miluse_search_visibility($post) {
+       esc_html_e('Click on the posttitle you want to exclude', 'milun-search');
     }
 
-    
+ 
 }
