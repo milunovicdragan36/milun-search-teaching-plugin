@@ -2,25 +2,27 @@
 
 Learn WordPress plugin development by building a live search plugin step by step.
 
-## Lesson 05 – Create the Search Form Custom Post Type
+## Lesson 06 – Creating the Search Form Meta Box
 
-In this lesson, we continue developing the `MILUSE_Search_Form` class and create the Search Form custom post type for the Milun Search plugin.
+In this lesson, we continue developing the `MILUSE_Search_Form` class and create a custom meta box for the Search Form custom post type.
 
-We register the custom post type with WordPress and configure how it behaves inside the WordPress admin area.
+We use the WordPress `add_meta_boxes` action hook and the `add_meta_box()` function to display a custom meta box inside the WordPress admin area.
+
+We also create a callback method that displays instructions inside the meta box.
 
 ## What We Build in This Lesson
 
-In Lesson 05, we:
+In Lesson 06, we:
 
-- Register the Search Form custom post type
-- Use the WordPress `init` action hook
-- Use the `register_post_type()` function
-- Set the custom post type label
-- Keep the custom post type private on the frontend
-- Display the custom post type in the WordPress admin area
-- Prevent users from creating additional Search Form posts
-- Use WordPress meta capability mapping
-- Prepare the Search Form meta box functionality for a later lesson
+- Use the WordPress `add_meta_boxes` action hook
+- Create the `miluse_add_meta_boxes()` method
+- Register a custom meta box using `add_meta_box()`
+- Define the meta box ID and title
+- Connect the meta box to the Search Form custom post type
+- Use an object method as the meta box callback
+- Create the `miluse_search_visibility()` callback method
+- Display translated and escaped text using `esc_html_e()`
+- Prepare the meta box for future post-exclusion functionality
 
 ## Plugin Structure
 
@@ -36,138 +38,174 @@ milun-search-teaching-plugin/
     └── class-search-form.php
 ```
 
-In this lesson, we mainly work inside:
+In this lesson, we work inside:
 
 `includes/class-search-form.php`
 
-## Registering the Search Form Custom Post Type
+## Registering the Meta Box Action Hook
 
-Inside the `MILUSE_Search_Form` constructor, we use the WordPress `init` action hook:
-
-```php
-add_action( 'init', array( $this, 'register_post_type' ) );
-```
-
-This tells WordPress to call the `register_post_type()` method during the `init` action.
-
-The `register_post_type()` method then registers our Search Form custom post type:
+Inside the `MILUSE_Search_Form` constructor, we add the WordPress `add_meta_boxes` action hook:
 
 ```php
-register_post_type(
-    'miluse_search_post',
-    array(
-        'label' => __( 'Search Form', 'milun-search' ),
-        'public' => false,
-        'show_ui' => true,
-        'show_in_menu' => true,
-        'supports' => false,
-        'capabilities' => array(
-            'create_posts' => 'do_not_allow',
-        ),
-        'map_meta_cap' => true
-    )
+add_action(
+    'add_meta_boxes',
+    array( $this, 'miluse_add_meta_boxes' )
 );
 ```
 
-The custom post type name is:
+This tells WordPress to call the `miluse_add_meta_boxes()` method when WordPress registers meta boxes.
 
-```text
-miluse_search_post
-```
+The `$this` keyword refers to the current object of the `MILUSE_Search_Form` class.
 
-Its label in the WordPress admin area is:
+## Creating the Search Form Meta Box
 
-```text
-Search Form
-```
-
-## Custom Post Type Configuration
-
-We use several arguments to control how the Search Form custom post type behaves.
-
-### `label`
+We create the following method inside the `MILUSE_Search_Form` class:
 
 ```php
-'label' => __( 'Search Form', 'milun-search' ),
+/**
+ * Add the Search Form meta box.
+ */
+public function miluse_add_meta_boxes() {
+
+    add_meta_box(
+        'miluse_posts_titles',
+        __( 'Search Form', 'milun-search' ),
+        array( $this, 'miluse_search_visibility' ),
+        'miluse_search_post',
+        'normal',
+        'default'
+    );
+}
 ```
 
-Sets the label displayed for the custom post type.
+The `add_meta_box()` function registers a custom meta box in the WordPress admin area.
 
-The `__()` function makes the text ready for WordPress translation.
+### Understanding the add_meta_box() Arguments
 
-### `public`
+**1. Meta Box ID**
 
 ```php
-'public' => false,
+'miluse_posts_titles'
 ```
 
-The Search Form is not intended to behave like normal public website content.
+This is the unique identifier of our meta box.
 
-It is used internally by the plugin to manage the Search Form configuration.
-
-### `show_ui`
+**2. Meta Box Title**
 
 ```php
-'show_ui' => true,
+__( 'Search Form', 'milun-search' )
 ```
 
-Enables the WordPress admin interface for the custom post type.
+Defines the title displayed at the top of the meta box.
 
-This allows us to manage the Search Form from the WordPress dashboard.
+The `__()` function makes the text available for WordPress translation.
 
-### `show_in_menu`
+**3. Callback Method**
 
 ```php
-'show_in_menu' => true,
+array( $this, 'miluse_search_visibility' )
 ```
 
-Displays the custom post type in the WordPress admin menu.
+Specifies the method responsible for displaying the content inside the meta box.
 
-### `supports`
+**4. Custom Post Type**
 
 ```php
-'supports' => false,
+'miluse_search_post'
 ```
 
-Disables the standard WordPress post editor features for this custom post type.
+Specifies the custom post type where the meta box will appear.
 
-We do not need the normal post editing fields because the Search Form will use its own custom functionality.
+This is the Search Form custom post type created in Lesson 05.
 
-### `capabilities`
+**5. Meta Box Context**
 
 ```php
-'capabilities' => array(
-    'create_posts' => 'do_not_allow',
-),
+'normal'
 ```
 
-Prevents users from manually creating additional Search Form posts through the standard WordPress interface.
+Specifies the area where the meta box is displayed.
 
-This is useful because the plugin is designed to control the Search Form rather than allow users to create multiple standard posts of this type.
+Common context values include:
 
-### `map_meta_cap`
+- `normal` – Main content area
+- `side` – Sidebar area
+- `advanced` – Advanced meta box area
+
+**6. Meta Box Priority**
 
 ```php
-'map_meta_cap' => true
+'default'
 ```
 
-Enables WordPress meta capability mapping for the custom post type.
+Specifies the priority of the meta box within its context.
 
-WordPress can map operations on individual posts to the appropriate primitive capabilities for the current user.
+Common priority values include:
 
+- `high`
+- `core`
+- `default`
+- `low`
 
+Priority influences the initial ordering of meta boxes within the same context.
 
-## Why Use a Custom Post Type?
+## Creating the Meta Box Callback Method
 
-The Search Form needs its own structure inside WordPress.
+Next, we create the callback method responsible for displaying content inside our meta box.
 
-Using a custom post type gives the plugin a dedicated content type that can later store and manage Search Form configuration.
+```php
+/**
+ * Display the Search Form meta box content.
+ *
+ * @param WP_Post $post Current post object.
+ */
+public function miluse_search_visibility( $post ) {
 
-This provides a foundation for adding custom meta boxes, search settings, and other functionality as we continue developing the plugin.
+    esc_html_e(
+        'Click on the post title you want to exclude.',
+        'milun-search'
+    );
+}
+```
+
+WordPress automatically passes the current post object to the callback method.
+
+The `$post` parameter represents the current Search Form post being edited.
+
+Although we do not use `$post` in this lesson, it will be useful when we implement additional functionality.
+
+### Understanding esc_html_e()
+
+```php
+esc_html_e(
+    'Click on the post title you want to exclude.',
+    'milun-search'
+);
+```
+
+The `esc_html_e()` function translates, escapes, and immediately displays text.
+
+It helps ensure that translated text is safely displayed as HTML content.
+
+The first argument is the text we want to display.
+
+The second argument, `milun-search`, is the plugin's text domain.
+
+## Why Use a Meta Box?
+
+A meta box allows us to add custom functionality to the WordPress post editing interface.
+
+In the Milun Search plugin, the Search Form meta box will eventually allow users to control which posts are included or excluded from search results.
+
+In this lesson, we create only the basic meta box structure and display an instructional message.
+
+The post-selection and exclusion functionality will be implemented in later lessons.
 
 ## What's Next?
 
-In the next lessons, we will continue developing the `MILUSE_Search_Form` class and add more functionality to the Search Form inside the WordPress admin area.
+In the next lessons, we will continue developing the Search Form meta box.
+
+We will work toward displaying WordPress post titles inside the meta box and allowing users to select which posts should be excluded from live search results.
 
 ## Course
 
@@ -179,12 +217,12 @@ The `main` branch contains the completed version of the plugin.
 
 The `lessons` branch contains the course version that is built step by step.
 
-## Lesson 05 Source Code
+## Lesson 06 Source Code
 
-GitHub tag:
+**GitHub tag:**
 
-`lesson-05-create-search-form-custom-post-type`
+`lesson-06`
 
-Source code:
+**Source code:**
 
-https://github.com/milunovicdragan36/milun-search-teaching-plugin/tree/lesson-05-create-search-form-custom-post-type
+https://github.com/milunovicdragan36/milun-search-teaching-plugin/tree/lesson-06
