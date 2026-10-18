@@ -170,7 +170,7 @@ The source code for each lesson is available in this repository through Git tags
 https://github.com/milunovicdragan36/milun-search-teaching-plugin/tree/lesson-05-create-search-form-custom-post-type
 
 **Lesson 06:**  
-https://github.com/milunovicdragan36/milun-search-teaching-plugin/tree/lesson-06
+[Create Search Form Meta Box](https://github.com/milunovicdragan36/milun-search-teaching-plugin/releases/tag/lesson-06-creating-search-form-meta-box)
 
 ## Milun Search Plugin
 
