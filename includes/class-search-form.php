@@ -60,8 +60,42 @@ class MILUSE_Search_Form {
        
     }
     public function miluse_search_visibility($post) {
-       esc_html_e('Click on the posttitle you want to exclude', 'milun-search');
-    }
+       
+
+        ?>
+
+        <h4>
+            <?php
+            esc_html_e(
+                'Click on the title of the post you want to exclude and mark it with red color.',
+                'milun-search'
+            );
+            ?>
+        </h4>
+
+
+
+            <?php
+         /**
+         * Get titles of all published WordPress posts.
+         */
+        
+        global $wpdb;
+        
+        $titles = $wpdb->get_results(
+            "SELECT post_title
+             FROM wp_posts
+             WHERE post_type = 'post'
+             AND post_status = 'publish'"
+        );
+        echo '<pre>';
+        print_r($titles);
+        echo '</pre>';
+   
+
+
+      
+       }
 
  
 }

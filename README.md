@@ -1,228 +1,187 @@
-# Milun Search – WordPress Plugin Development Course
+# Milun Search – Learn WordPress Plugin Development by Building a Live Search Plugin
 
-Learn WordPress plugin development by building a live search plugin step by step.
+This repository contains the source code for the YouTube course **Learn WordPress Plugin Development by Building a Live Search Plugin**.
 
-## Lesson 06 – Creating the Search Form Meta Box
+In this course, we build a custom WordPress live search plugin step by step using PHP, MySQL, JavaScript, jQuery, AJAX, the WordPress REST API, HTML, and CSS.
 
-In this lesson, we continue developing the `MILUSE_Search_Form` class and create a custom meta box for the Search Form custom post type.
+Each lesson introduces new functionality and explains important WordPress plugin development concepts.
 
-We use the WordPress `add_meta_boxes` action hook and the `add_meta_box()` function to display a custom meta box inside the WordPress admin area.
+## Lesson 04 – Create Plugin Header and Main Plugin Classes
 
-We also create a callback method that displays instructions inside the meta box.
+In this lesson, we create the basic structure of our WordPress plugin.
 
-## What We Build in This Lesson
+### What we learn
 
-In Lesson 06, we:
+- Create the main WordPress plugin file.
+- Add the WordPress plugin header.
+- Prevent direct access using `WPINC`.
+- Include PHP class files using `require_once`.
+- Understand `plugin_dir_path()` and `__FILE__`.
+- Create the `MILUSE_Plugin` class.
+- Load plugin dependencies.
+- Initialize plugin components.
+- Create the `MILUSE_Search_Form` class.
+- Register WordPress action hooks.
 
-- Use the WordPress `add_meta_boxes` action hook
-- Create the `miluse_add_meta_boxes()` method
-- Register a custom meta box using `add_meta_box()`
-- Define the meta box ID and title
-- Connect the meta box to the Search Form custom post type
-- Use an object method as the meta box callback
-- Create the `miluse_search_visibility()` callback method
-- Display translated and escaped text using `esc_html_e()`
-- Prepare the meta box for future post-exclusion functionality
+## Lesson 05 – Create Search Form Custom Post Type
+
+In this lesson, we register a custom post type for managing our search form.
+
+### What we learn
+
+- Understand WordPress custom post types.
+- Register a custom post type using `register_post_type()`.
+- Use the WordPress `init` action hook.
+- Configure custom post type arguments.
+- Display the Search Form in the WordPress administration area.
+- Prevent users from creating additional Search Form posts using the `create_posts` capability.
+- Understand `map_meta_cap`.
+
+The custom post type slug is:
+
+`miluse_search_post`
+
+## Lesson 06 – Create Search Form Meta Box
+
+In this lesson, we create a custom meta box for our Search Form.
+
+### What we learn
+
+- Understand WordPress meta boxes.
+- Register a meta box using `add_meta_box()`.
+- Use the `add_meta_boxes` action hook.
+- Define a callback function for displaying meta box content.
+- Understand the `normal` context and `default` priority.
+- Use `esc_html_e()` to display translated and escaped text.
+
+The meta box will be used to manage which WordPress posts are included in the live search results.
+
+## Lesson 07 – Retrieve WordPress Post Titles Using $wpdb
+
+In this lesson, we learn how to retrieve data directly from the WordPress database using the global `$wpdb` object.
+
+We retrieve the titles of published WordPress posts from the `wp_posts` table and display the results using the PHP `print_r()` function.
+
+### What we learn
+
+- Understand the global `$wpdb` object.
+- Access the WordPress database from a plugin.
+- Understand the `wp_posts` database table.
+- Write a basic SQL `SELECT` query.
+- Filter posts using `WHERE`.
+- Retrieve published posts using `post_status = 'publish'`.
+- Retrieve standard WordPress posts using `post_type = 'post'`.
+- Execute a database query using `$wpdb->get_results()`.
+- Understand the objects returned by `get_results()`.
+- Display retrieved data using `print_r()`.
+
+### PHP code used in Lesson 07
+
+```php
+global $wpdb;
+
+$titles = $wpdb->get_results(
+    "SELECT post_title
+     FROM {$wpdb->posts}
+     WHERE post_type = 'post'
+     AND post_status = 'publish'"
+);
+
+print_r( $titles );
+```
+
+### Code explanation
+
+**`global $wpdb;`**
+
+Makes the WordPress database object available inside the current function or method.
+
+**`$wpdb->get_results()`**
+
+Executes an SQL query and returns the results. By default, the results are returned as an array of objects.
+
+**`SELECT post_title`**
+
+Selects the `post_title` column from the database table.
+
+**`FROM {$wpdb->posts}`**
+
+Specifies the WordPress posts table, using the configured database table prefix.
+
+**`WHERE post_type = 'post'`**
+
+Retrieves only standard WordPress posts.
+
+**`AND post_status = 'publish'`**
+
+Retrieves only published posts.
+
+**`print_r( $titles );`**
+
+Displays the retrieved data for debugging and educational purposes.
+
+### Example output
+
+```text
+Array
+(
+    [0] => stdClass Object
+        (
+            [post_title] => First Post
+        )
+
+    [1] => stdClass Object
+        (
+            [post_title] => Second Post
+        )
+)
+```
+
+Each returned object contains a `post_title` property.
+
+The retrieved titles will be used in future lessons to develop the Search Form functionality.
 
 ## Plugin Structure
 
-The plugin structure remains:
-
 ```text
 milun-search-teaching-plugin/
-│
 ├── milun-search-teaching-plugin.php
-│
-└── includes/
-    ├── class-plugin.php
-    └── class-search-form.php
+├── includes/
+│   ├── class-plugin.php
+│   └── class-search-form.php
+└── README.md
 ```
 
-In this lesson, we work inside:
+## Technologies Used
 
-`includes/class-search-form.php`
+- PHP
+- MySQL
+- WordPress Plugin API
+- WordPress Database API
+- Object-Oriented Programming (OOP)
 
-## Registering the Meta Box Action Hook
+Additional technologies will be introduced as the course progresses.
 
-Inside the `MILUSE_Search_Form` constructor, we add the WordPress `add_meta_boxes` action hook:
+## Source Code
 
-```php
-add_action(
-    'add_meta_boxes',
-    array( $this, 'miluse_add_meta_boxes' )
-);
-```
+The source code for each lesson is available in this repository through Git tags.
 
-This tells WordPress to call the `miluse_add_meta_boxes()` method when WordPress registers meta boxes.
+**Lesson 05:**  
+https://github.com/milunovicdragan36/milun-search-teaching-plugin/tree/lesson-05-create-search-form-custom-post-type
 
-The `$this` keyword refers to the current object of the `MILUSE_Search_Form` class.
+**Lesson 06:**  
+https://github.com/milunovicdragan36/milun-search-teaching-plugin/tree/lesson-06
 
-## Creating the Search Form Meta Box
+## Milun Search Plugin
 
-We create the following method inside the `MILUSE_Search_Form` class:
+You can also explore the completed Milun Search plugin on TemplateMonster.
 
-```php
-/**
- * Add the Search Form meta box.
- */
-public function miluse_add_meta_boxes() {
-
-    add_meta_box(
-        'miluse_posts_titles',
-        __( 'Search Form', 'milun-search' ),
-        array( $this, 'miluse_search_visibility' ),
-        'miluse_search_post',
-        'normal',
-        'default'
-    );
-}
-```
-
-The `add_meta_box()` function registers a custom meta box in the WordPress admin area.
-
-### Understanding the add_meta_box() Arguments
-
-**1. Meta Box ID**
-
-```php
-'miluse_posts_titles'
-```
-
-This is the unique identifier of our meta box.
-
-**2. Meta Box Title**
-
-```php
-__( 'Search Form', 'milun-search' )
-```
-
-Defines the title displayed at the top of the meta box.
-
-The `__()` function makes the text available for WordPress translation.
-
-**3. Callback Method**
-
-```php
-array( $this, 'miluse_search_visibility' )
-```
-
-Specifies the method responsible for displaying the content inside the meta box.
-
-**4. Custom Post Type**
-
-```php
-'miluse_search_post'
-```
-
-Specifies the custom post type where the meta box will appear.
-
-This is the Search Form custom post type created in Lesson 05.
-
-**5. Meta Box Context**
-
-```php
-'normal'
-```
-
-Specifies the area where the meta box is displayed.
-
-Common context values include:
-
-- `normal` – Main content area
-- `side` – Sidebar area
-- `advanced` – Advanced meta box area
-
-**6. Meta Box Priority**
-
-```php
-'default'
-```
-
-Specifies the priority of the meta box within its context.
-
-Common priority values include:
-
-- `high`
-- `core`
-- `default`
-- `low`
-
-Priority influences the initial ordering of meta boxes within the same context.
-
-## Creating the Meta Box Callback Method
-
-Next, we create the callback method responsible for displaying content inside our meta box.
-
-```php
-/**
- * Display the Search Form meta box content.
- *
- * @param WP_Post $post Current post object.
- */
-public function miluse_search_visibility( $post ) {
-
-    esc_html_e(
-        'Click on the post title you want to exclude.',
-        'milun-search'
-    );
-}
-```
-
-WordPress automatically passes the current post object to the callback method.
-
-The `$post` parameter represents the current Search Form post being edited.
-
-Although we do not use `$post` in this lesson, it will be useful when we implement additional functionality.
-
-### Understanding esc_html_e()
-
-```php
-esc_html_e(
-    'Click on the post title you want to exclude.',
-    'milun-search'
-);
-```
-
-The `esc_html_e()` function translates, escapes, and immediately displays text.
-
-It helps ensure that translated text is safely displayed as HTML content.
-
-The first argument is the text we want to display.
-
-The second argument, `milun-search`, is the plugin's text domain.
-
-## Why Use a Meta Box?
-
-A meta box allows us to add custom functionality to the WordPress post editing interface.
-
-In the Milun Search plugin, the Search Form meta box will eventually allow users to control which posts are included or excluded from search results.
-
-In this lesson, we create only the basic meta box structure and display an instructional message.
-
-The post-selection and exclusion functionality will be implemented in later lessons.
-
-## What's Next?
-
-In the next lessons, we will continue developing the Search Form meta box.
-
-We will work toward displaying WordPress post titles inside the meta box and allowing users to select which posts should be excluded from live search results.
+Milun Search provides live search functionality for WordPress websites without requiring a page refresh.
 
 ## Course
 
-**Learn WordPress Plugin Development by Building a Live Search Plugin**
+Follow the **Milun Media** YouTube channel for step-by-step WordPress and WooCommerce plugin development tutorials.
 
-The Milun Search plugin is developed progressively throughout the course.
+## License
 
-The `main` branch contains the completed version of the plugin.
-
-The `lessons` branch contains the course version that is built step by step.
-
-Lesson 06 Source Code
-
-GitHub tag:
-
-lesson-06-creating-search-form-meta-box
-
-Source code:
-
-https://github.com/milunovicdragan36/milun-search-teaching-plugin/tree/lesson-06-creating-search-form-meta-box
+GPL-2.0-or-later
