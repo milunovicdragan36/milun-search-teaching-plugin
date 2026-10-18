@@ -217,12 +217,12 @@ The `main` branch contains the completed version of the plugin.
 
 The `lessons` branch contains the course version that is built step by step.
 
-## Lesson 06 Source Code
+Lesson 06 Source Code
 
-**GitHub tag:**
+GitHub tag:
 
-`lesson-06`
+lesson-06-creating-search-form-meta-box
 
-**Source code:**
+Source code:
 
-https://github.com/milunovicdragan36/milun-search-teaching-plugin/tree/lesson-06
+https://github.com/milunovicdragan36/milun-search-teaching-plugin/tree/lesson-06-creating-search-form-meta-box
