@@ -88,11 +88,34 @@ class MILUSE_Search_Form {
              WHERE post_type = 'post'
              AND post_status = 'publish'"
         );
-        echo '<pre>';
-        print_r($titles);
-        echo '</pre>';
-   
+        
+    
+      ?>
+           <div class="titles_of_posts">
 
+            <?php
+
+            /**
+             * Display each published post title.
+             */
+            foreach ( $titles as $title_object) {
+
+               
+
+              ?>
+
+                <div>
+                    <?php echo esc_html( $title_object->post_title ); ?>
+                </div>
+
+                <?php
+            }
+            ?>
+
+        </div>
+
+        <?php
+  
 
       
        }
