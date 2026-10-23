@@ -72,11 +72,8 @@ class MILUSE_Search_Form {
             );
             ?>
         </h4>
-
-
-
-            <?php
-         /**
+       <?php
+        /**
          * Get titles of all published WordPress posts.
          */
         
@@ -88,9 +85,8 @@ class MILUSE_Search_Form {
              WHERE post_type = 'post'
              AND post_status = 'publish'"
         );
-        
-    
-      ?>
+      
+         ?>
            <div class="titles_of_posts">
 
             <?php
@@ -115,10 +111,7 @@ class MILUSE_Search_Form {
         </div>
 
         <?php
-  
-
-      
-       }
-
+ 
+    }
  
 }
