@@ -306,7 +306,6 @@ What we learn
 - Register JavaScript files using wp_register_script().
 - Enqueue JavaScript files using wp_enqueue_script().
 - Use jQuery as a JavaScript dependency.
-- Understand browser caching and hard refresh during development.
 PHP code used in Lesson 09
 <?php
 
@@ -366,8 +365,6 @@ MILUSE_Admin organizes the plugin's admin-area asset loading. Its constructor re
 wp_register_style() registers the admin stylesheet under the handle miluse-admin-style. The all argument means the stylesheet applies to all media types, not all WordPress pages. wp_enqueue_style() queues the registered stylesheet for loading.
 
 wp_register_script() registers admin.js under the handle miluse-admin. The array( 'jquery' ) argument declares jQuery as a dependency, and the final true requests footer loading. wp_enqueue_script() queues the script for loading. Since jQuery is already a dependency, the separate wp_enqueue_script( 'jquery' ) call is optional.
-
-Browser caching: Browsers may reuse cached CSS and JavaScript files. During development, a hard refresh (usually Ctrl + Shift + R) can help request updated resources. Updating the asset version when files change also helps prevent stale cached assets.
 
 Note: The admin_enqueue_scripts hook runs on admin screens generally. Restricting these assets to the plugin's own admin screen can be added in a later lesson.
 Plugin Structure
