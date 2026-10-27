@@ -24,8 +24,10 @@ class MILUSE_Plugin {
 
 
        require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-search-form.php';
-        
-    }
+
+        require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-admin.php';
+
+       }
 
     /**
      * Initialize all plugin components.
@@ -33,8 +35,9 @@ class MILUSE_Plugin {
     public function miluse_init_components() {
 
 
-        
         new MILUSE_Search_Form();
+
+        new MILUSE_Admin();
 
     }
 }
