@@ -534,7 +534,7 @@ The source code for each lesson is available in this repository through Git tags
 
 [Retrieve WordPress Post Titles Using $wpdb](https://github.com/milunovicdragan36/milun-search-teaching-plugin/releases/tag/lesson-07-retrieve-wordpress-post-titles-using-wpdb)
 
-**Lesson 08:**
+Lesson 08:
 
 Display WordPress Post Titles Using a PHP Foreach Loop
 
