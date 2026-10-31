@@ -335,52 +335,85 @@ This functionality will be used to display WordPress post titles inside our Sear
 In this lesson, we create the MILUSE_Admin class and learn how to register and enqueue CSS and JavaScript files in the WordPress administration area.
 
 ### What we learn
+
 - Create the MILUSE_Admin class and its constructor.
+
 - Use the admin_enqueue_scripts action hook.
+
 - Register class methods as callbacks using add_action() and $this.
+
 - Register a CSS file using wp_register_style().
+
 - Enqueue a registered stylesheet using wp_enqueue_style().
+
 - Understand stylesheet handles, paths, dependencies, versions, and media types.
+
 - Register a JavaScript file using wp_register_script().
+
 - Enqueue JavaScript using wp_enqueue_script().
+
 - Use jQuery as a script dependency.
+
 - Understand the footer-loading argument for JavaScript files.
+
 ### PHP code used in Lesson 09
+
 <?php
 
 class MILUSE_Admin {
 
-    public function __construct() {
-        add_action( 'admin_enqueue_scripts', [$this, 'enqueue_admin_styles'] );
-        add_action( 'admin_enqueue_scripts', [$this, 'enqueue_admin_scripts'] );
-    }
+    public function __construct() {
 
-    public function enqueue_admin_styles() {
-        wp_register_style(
-            'miluse-admin-style',
-            plugin_dir_url( __FILE__ ) . '../admin/css/admin.css',
-            array(),
-            '1.0',
-            'all'
-        );
+        add_action( 'admin_enqueue_scripts', [$this, 'enqueue_admin_styles'] );
 
-        wp_enqueue_style( 'miluse-admin-style' );
-    }
+        add_action( 'admin_enqueue_scripts', [$this, 'enqueue_admin_scripts'] );
 
-    public function enqueue_admin_scripts() {
-        wp_enqueue_script( 'jquery' );
+    }
 
-        wp_register_script(
-            'miluse-admin',
-            plugin_dir_url( __FILE__ ) . '../admin/js/admin.js',
-            array( 'jquery' ),
-            '1.0',
-            true
-        );
+    public function enqueue_admin_styles() {
 
-        wp_enqueue_script( 'miluse-admin' );
-    }
+        wp_register_style(
+
+            'miluse-admin-style',
+
+            plugin_dir_url( __FILE__ ) . '../admin/css/admin.css',
+
+            array(),
+
+            '1.0',
+
+            'all'
+
+        );
+
+        wp_enqueue_style( 'miluse-admin-style' );
+
+    }
+
+    public function enqueue_admin_scripts() {
+
+        wp_enqueue_script( 'jquery' );
+
+        wp_register_script(
+
+            'miluse-admin',
+
+            plugin_dir_url( __FILE__ ) . '../admin/js/admin.js',
+
+            array( 'jquery' ),
+
+            '1.0',
+
+            true
+
+        );
+
+        wp_enqueue_script( 'miluse-admin' );
+
+    }
+
 }
+
 ### Code explanation
 
 admin_enqueue_scripts
@@ -406,6 +439,50 @@ Specifies that the CSS stylesheet applies to all media types.
 true
 
 Requests that WordPress load the JavaScript file in the footer.
+
+## Lesson 10 – Call a JavaScript Function Using onclick in WordPress
+
+In this lesson, we learn how to call a JavaScript function when a user clicks a WordPress post title in the Search Form meta box.
+
+We use the HTML onclick attribute to call hideTitleFunction() and pass the post title from PHP to JavaScript using the WordPress wp_json_encode() function.
+
+### What we learn
+- Understand the HTML onclick event attribute.
+- Call a JavaScript function when an HTML element is clicked.
+- Define a JavaScript function with a parameter.
+- Pass a WordPress post title from PHP to JavaScript.
+- Use wp_json_encode() to encode the post title as a JavaScript-compatible value.
+- Use alert() to display the clicked post title.
+### Code used in Lesson 10
+<div onclick='hideTitleFunction(
+    <?php echo wp_json_encode( $title_object->post_title ); ?>
+);'>
+    <?php echo esc_html( $title_object->post_title ); ?>
+</div>
+function hideTitleFunction(title) {
+    alert(title);
+}
+### Code explanation
+
+onclick
+
+Runs the specified JavaScript code when the user clicks the HTML element.
+
+hideTitleFunction(...)
+
+Calls our JavaScript function and passes the clicked WordPress post title as an argument.
+
+wp_json_encode( $title_object->post_title )
+
+Encodes the PHP post title as a JSON string suitable for passing to JavaScript. The outer HTML attribute uses single quotes; for production code, take care to escape the complete attribute safely when titles contain apostrophes.
+
+function hideTitleFunction(title)
+
+Defines a JavaScript function whose title parameter receives the value passed when the function is called.
+
+alert(title)
+
+Displays the post title in a browser alert dialog.
 
 ## Plugin Structure
 
@@ -464,6 +541,10 @@ Display WordPress Post Titles Using a PHP Foreach Loop
 Lesson 09:
 
 Enqueue CSS and JavaScript Files in the WordPress Admin Area
+
+Lesson 10:
+
+Call a JavaScript Function Using onclick in WordPress
 
 ## Milun Search Plugin
 

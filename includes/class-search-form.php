@@ -100,7 +100,10 @@ class MILUSE_Search_Form {
 
               ?>
 
-                <div>
+                <div onclick='hideTitleFunction(
+                        
+                        <?php echo wp_json_encode( $title_object->post_title ); ?>
+                    );'>
                     <?php echo esc_html( $title_object->post_title ); ?>
                 </div>
 

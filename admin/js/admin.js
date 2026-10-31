@@ -1,1 +1,4 @@
-alert('Hello from admin.js');
+function hideTitleFunction(title) {
+alert(title);
+
+}
